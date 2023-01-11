@@ -102,3 +102,55 @@ class Game:
                     and self.board.board[r - 3][c + 3] == dot.name
                 ):
                     return True
+                
+    def updateDB(self):
+        move = {
+            "current_turn": self.current_turn.id,
+            "board": self.board.board,
+            "game_result": self.game_result,
+            "player_one_id": self.player_one.id,
+            "player_two_id": self.player_two.id,
+            "remaining_moves": self.remaining_moves,
+        }
+
+        final_move = json.dumps(move)
+        print(final_move)
+        self.game_db.add_move(self.__id, final_move)
+
+    def retrieveSave(self):
+        save = self.game_db.getMove()
+        if save:
+            return save
+        else:
+            return "FAIL"
+
+    def move(self, player, col):
+        if self.game_result != "":
+            return "Game result already declared."
+        else:
+            print("HELO")
+            print(player)
+            print(self.players_dots[player.id])
+            if self.board.is_valid_location(col):
+                row = self.board.get_next_open_row(col)
+                self.board.drop_dot(row, col, self.players_dots[player.id].name)
+
+            if self.winning_move(self.players_dots[player.id]):
+                self.game_result = f"{player.name} wins!!!!"
+                print(self.game_result)
+                return
+            self.switchCurrentPlayer()
+            self.remaining_moves -= 1
+            if self.remaining_moves <= 0:
+                self.game_result = "DRAW"
+            print(self.board.board)
+
+            self.updateDB()
+            return None
+
+    def switchCurrentPlayer(self):
+        if self.current_turn == self.player_one:
+            self.current_turn = self.player_two
+            return
+        self.current_turn = self.player_one
+        
