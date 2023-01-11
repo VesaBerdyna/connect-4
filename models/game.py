@@ -57,3 +57,48 @@ class Game:
             raise ValueError
         self.status = "playing"
         print("Game has started!")
+        
+    def winning_move(self, dot):
+        # Check horizontal locations for win
+        for c in range(self.board.COLUMN_COUNT - 3):
+            for r in range(self.board.ROW_COUNT):
+                if (
+                    self.board.board[r][c] == dot.name
+                    and self.board.board[r][c + 1] == dot.name
+                    and self.board.board[r][c + 2] == dot.name
+                    and self.board.board[r][c + 3] == dot.name
+                ):
+                    return True
+
+        # Check vertical locations for win
+        for c in range(self.board.COLUMN_COUNT):
+            for r in range(self.board.ROW_COUNT - 3):
+                if (
+                    self.board.board[r][c] == dot.name
+                    and self.board.board[r + 1][c] == dot.name
+                    and self.board.board[r + 2][c] == dot.name
+                    and self.board.board[r + 3][c] == dot.name
+                ):
+                    return True
+
+        # Check positively sloped diaganols
+        for c in range(self.board.COLUMN_COUNT - 3):
+            for r in range(self.board.ROW_COUNT - 3):
+                if (
+                    self.board.board[r][c] == dot.name
+                    and self.board.board[r + 1][c + 1] == dot.name
+                    and self.board.board[r + 2][c + 2] == dot.name
+                    and self.board.board[r + 3][c + 3] == dot.name
+                ):
+                    return True
+
+        # Check negatively sloped diaganols
+        for c in range(self.board.COLUMN_COUNT - 3):
+            for r in range(3, self.board.ROW_COUNT):
+                if (
+                    self.board.board[r][c] == dot.name
+                    and self.board.board[r - 1][c + 1] == dot.name
+                    and self.board.board[r - 2][c + 2] == dot.name
+                    and self.board.board[r - 3][c + 3] == dot.name
+                ):
+                    return True
