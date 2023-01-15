@@ -1,90 +1,81 @@
-import sqlite3
 from abc import ABC, abstractmethod
-from sqlite3 import Error
+import sqlite3
 
 
-class db(ABC):
+class Database(ABC):
     @abstractmethod
-    def close_connection():
+    def init_db(self):
+        """Initialize the database and create the table"""
         pass
 
     @abstractmethod
-    def create_table():
+    def add_move(self, id, move):
+        """Add a move to the table"""
         pass
 
     @abstractmethod
-    def add_move(move):
+    def get_move(self):
+        """Retrieve the last move from the table"""
         pass
 
     @abstractmethod
-    def getMove():
+    def clear(self):
+        """Clear the table"""
         pass
 
     @abstractmethod
-    def clear():
+    def _get_connection(self):
+        """Return a connection to the database"""
         pass
 
 
-class GameDB(db):
+class GameDB(Database):
     def __init__(self, table_name):
-        self.__table_name = table_name
-        self.__connection = sqlite3.connect("game_db")
+        self.table_name = table_name
 
-    def close_connection(self):
-        if self.__connection:
-            self.__connection.close()
-
-    def create_table(self):
+    def init_db(self):
+        connection = self._get_connection()
         try:
-            self.__connection.execute(
-                f"CREATE TABLE {self.__table_name} (current_turn TEXT, board TEXT, winner TEXT, player_one TEXT, player_two TEXT, remaining_moves INT)"
+            connection.execute(
+                f"CREATE TABLE IF NOT EXISTS {self.table_name} (ID INT, DATA TEXT)"
             )
-            print(f"Table {self.__table_name} created.")
-        except Error as e:
-            print(e)
+            print(f"Table {self.table_name} created.")
+        except sqlite3.Error as e:
+            raise Exception(f"Error creating table: {e}")
 
-        finally:
-            self.close_connection()
-
-    def add_move(self, move):  # will take in a tuple
-        self.clear()
-        self.create_table()
+    def add_move(self, id, move):
+        connection = self._get_connection()
         try:
-            cur = self.__connection.cursor()
-            cur.execute(
-                f"INSERT INTO {self.__table_name} VALUES (?, ?, ?, ?, ?, ?)", move
-            )
-            self.__connection.commit()
+            cur = connection.cursor()
+            cur.execute(f"INSERT INTO {self.table_name} VALUES (?, ?)", (id, move))
+            connection.commit()
             print("Player's move added to db.")
-        except Error as e:
+        except sqlite3.Error as e:
             print(e)
+            # raise Exception(f"Error adding move: {e}")
 
-        finally:
-            self.close_connection()
-
-    def getMove(self):
-        conn = None
+    def get_move(self):
+        connection = self._get_connection()
         try:
-            conn = sqlite3.connect("sqlite_db")
-            cur = conn.cursor()
-
-            cur.execute(f"SELECT * FROM {self.__table_name}")
+            cur = connection.cursor()
+            cur.execute(f"SELECT * FROM {self.table_name}")
             result = cur.fetchall()
             return result[0]
-
-        except Error as e:
+        except sqlite3.Error as e:
+            # raise Exception(f"Error retrieving move: {e}")
             print(e)
-            return None
-
-        finally:
-            self.close_connection()
 
     def clear(self):
+        connection = self._get_connection()
         try:
-            self.__connection.execute(f"DROP TABLE {self.__table_name}")
-            print("Table droped.")
-        except Error as e:
-            print(e)
+            connection.execute(f"DROP TABLE IF EXISTS {self.table_name}")
+            print("Table dropped.")
+        except sqlite3.Error as e:
+            raise Exception(f"Error dropping table: {e}")
 
-        finally:
-            self.close_connection()
+    def _get_connection(self):
+        try:
+            connection = sqlite3.connect("game_db")
+            return connection
+        except sqlite3.Error as e:
+            raise Exception(f"Error connecting to database: {e}")
