@@ -1,5 +1,5 @@
-from abc import ABC, abstractmethod
 import sqlite3
+from abc import ABC, abstractmethod
 
 
 class Database(ABC):
@@ -9,12 +9,16 @@ class Database(ABC):
         pass
 
     @abstractmethod
-    def add_move(self, id, move):
-        """Add a move to the table"""
+    def create_game(self, id, move):
+        """Add the first move"""
         pass
 
     @abstractmethod
-    def get_move(self):
+    def update_game(self, id, data):
+        """Update table"""
+
+    @abstractmethod
+    def get_game_state(self):
         """Retrieve the last move from the table"""
         pass
 
@@ -37,30 +41,43 @@ class GameDB(Database):
         connection = self._get_connection()
         try:
             connection.execute(
-                f"CREATE TABLE IF NOT EXISTS {self.table_name} (ID INT, DATA TEXT)"
+                f"CREATE TABLE IF NOT EXISTS {self.table_name} (ID TEXT PRIMARY KEY, DATA TEXT)"
             )
             print(f"Table {self.table_name} created.")
         except sqlite3.Error as e:
             raise Exception(f"Error creating table: {e}")
 
-    def add_move(self, id, move):
+    def create_game(self, id, data):
         connection = self._get_connection()
         try:
             cur = connection.cursor()
-            cur.execute(f"INSERT INTO {self.table_name} VALUES (?, ?)", (id, move))
+            cur.execute(f"INSERT INTO {self.table_name} VALUES (?, ?)", (id, data))
             connection.commit()
-            print("Player's move added to db.")
+            print("First move added to the table.")
         except sqlite3.Error as e:
             print(e)
             # raise Exception(f"Error adding move: {e}")
 
-    def get_move(self):
+    def update_game(self, id, data):
         connection = self._get_connection()
         try:
             cur = connection.cursor()
-            cur.execute(f"SELECT * FROM {self.table_name}")
+            cur.execute(f"UPDATE {self.table_name} SET DATA=? WHERE ID=?", (data, id))
+            connection.commit()
+            print("Player's move updated to db.")
+
+        except sqlite3.Error as e:
+            print(e)
+            # raise Exception(f"Error adding move: {e}")
+
+    def get_game_state(self, id):
+        connection = self._get_connection()
+        try:
+            cur = connection.cursor()
+            cur.execute(f"SELECT * FROM {self.table_name} WHERE ID='{id}'")
             result = cur.fetchall()
-            return result[0]
+            # print("result from db", result, id)
+            return result[-1]
         except sqlite3.Error as e:
             # raise Exception(f"Error retrieving move: {e}")
             print(e)
