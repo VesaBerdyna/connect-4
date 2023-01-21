@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Connect 4</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/style.css') }}">
+    </head>
+
+    <body>
+        <div id = "gametags">
+
+            <p id = "status">{{player}}</p>
+
+        </div>
+        <input type="hidden" id="game_id" name="game_id" value="{{game_id}}">
+
+        <div class = "board">
+            <table>
+                <tr>
+                    <td onclick = "move(event)" class = "slot" num="0"></td>
+                    <td onclick = "move(event)" class = "slot" num="1"></td>
+                    <td onclick = "move(event)" class = "slot" num="2"></td>
+                    <td onclick = "move(event)" class = "slot" num="3"></td>
+                    <td onclick = "move(event)" class = "slot" num="4"></td>
+                    <td onclick = "move(event)" class = "slot" num="5"></td>
+                    <td onclick = "move(event)" class = "slot" num="6"></td>
+
+                </tr>
+                <tr>
+                    <td onclick = "move(event)" class = "slot" num="0"></td>
+                    <td onclick = "move(event)" class = "slot" num="1"></td>
+                    <td onclick = "move(event)" class = "slot" num="2"></td>
+                    <td onclick = "move(event)" class = "slot" num="3"></td>
+                    <td onclick = "move(event)" class = "slot" num="4"></td>
+                    <td onclick = "move(event)" class = "slot" num="5"></td>
+                    <td onclick = "move(event)" class = "slot" num="6"></td>
+
+                </tr>
+                <tr>
+                    <td onclick = "move(event)" class = "slot" num="0"></td>
+                    <td onclick = "move(event)" class = "slot" num="1"></td>
+                    <td onclick = "move(event)" class = "slot" num="2"></td>
+                    <td onclick = "move(event)" class = "slot" num="3"></td>
+                    <td onclick = "move(event)" class = "slot" num="4"></td>
+                    <td onclick = "move(event)" class = "slot" num="5"></td>
+                    <td onclick = "move(event)" class = "slot" num="6"></td>
+
+                </tr>
+                <tr>
+                    <td onclick = "move(event)" class = "slot" num="0"></td>
+                    <td onclick = "move(event)" class = "slot" num="1"></td>
+                    <td onclick = "move(event)" class = "slot" num="2"></td>
+                    <td onclick = "move(event)" class = "slot" num="3"></td>
+                    <td onclick = "move(event)" class = "slot" num="4"></td>
+                    <td onclick = "move(event)" class = "slot" num="5"></td>
+                    <td onclick = "move(event)" class = "slot" num="6"></td>
+
+                </tr>
+                <tr>
+                    <td onclick = "move(event)" class = "slot" num="0"></td>
+                    <td onclick = "move(event)" class = "slot" num="1"></td>
+                    <td onclick = "move(event)" class = "slot" num="2"></td>
+                    <td onclick = "move(event)" class = "slot" num="3"></td>
+                    <td onclick = "move(event)" class = "slot" num="4"></td>
+                    <td onclick = "move(event)" class = "slot" num="5"></td>
+                    <td onclick = "move(event)" class = "slot" num="6"></td>
+
+                </tr>
+                <tr>
+                    <td onclick = "move(event)" class = "slot" num="0"></td>
+                    <td onclick = "move(event)" class = "slot" num="1"></td>
+                    <td onclick = "move(event)" class = "slot" num="2"></td>
+                    <td onclick = "move(event)" class = "slot" num="3"></td>
+                    <td onclick = "move(event)" class = "slot" num="4"></td>
+                    <td onclick = "move(event)" class = "slot" num="5"></td>
+                    <td onclick = "move(event)" class = "slot" num="6"></td>
+
+                </tr>
+            </table>
+        </div>
+        <script src="{{ url_for('static', filename = 'js/game.js') }}"></script>
+    </body>
+
+</html>
