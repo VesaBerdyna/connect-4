@@ -1,28 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Type your name</title>
-    <!-- <link rel="stylesheet" href="{{url_for('static', filename='css/popup.css') }}"> -->
-</head>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="{{url_for('static', filename='css/player_form.css') }}"
+    />
+  </head>
 
-<body>
-    <div id="popup-container">
-        <div id="popup-content">
-            <form method="post">
-                {% if mode is none %}
-                <input type="hidden" name="mode" value="single">
-                {% else %}
-                <input type="hidden" name="mode" value="{{mode}}">
-                {% endif %}
-                <label for="name">Enter your name:</label>
-                <input type="text" id="name" name="player_one" placeholder="Your name">
-                <input type="text" id="name" name="player_two" placeholder="Your name">
-                <input type="submit" value="Submit">
-            </form>
-        </div>
+  <body>
+    <div class="main" id="popup-container">
+      <div id="popup-content">
+        <form method="post">
+          {% if mode is none %}
+          <input type="hidden" name="mode" value="single" />
+          {% else %}
+          <input type="hidden" name="mode" value="{{mode}}" />
+          {% endif %}
+          <div id="multi" class="text-center">
+            <label class="text-white text-bold" for="name"
+              >Enter player 1 and player 2 names:</label
+            >
+          </div>
+          <div id="single" class="text-center">
+            <label class="text-white text-bold" for="name"
+              >Enter players 1 name:</label
+            >
+          </div>
+          <input
+            type="text"
+            id="player1"
+            name="player_one"
+            placeholder="Player 1:"
+            class="player1"
+          />
+
+          <input
+            type="text"
+            id="player2"
+            name="player_two"
+            placeholder="Player 2:"
+            class="player2"
+          />
+          <div>
+            <input hidden type="submit" value="Submit" class="submit-button" />
+          </div>
+        </form>
+      </div>
     </div>
-</body>
+    <script src="{{ url_for('static', filename = 'js/player_form.js') }}"></script>
+  </body>
+</html>
