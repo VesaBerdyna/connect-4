@@ -49,3 +49,67 @@ class ConnectFour:
 
                 return redirect(url_for("create_game"))
             return render_template("popup.html")
+          
+   def create_game(self):
+        @self.app.route("/game")
+        def create_game():
+            player_one = PlayerFactory.create_player_from_json(session["player_one"])
+            player_two = PlayerFactory.create_player_from_json(session["player_two"])
+
+            self.game = Game(player_one=player_one, player_two=player_two)
+            self.game.set_player_dot()
+            self.game.set_players()
+            self.game.start()
+            game_id = self.game.get_id()
+            self.game_db.create_game(game_id, self.game.get_game_state())
+            return render_template("game.html", game_id=game_id)
+
+    def board(self):
+        @self.app.route("/board", methods=["GET"])
+        def board():
+            game_id = request.args.get("game_id")
+            if game_id is None:
+                EmptyGame
+
+            game_state = self.game_db.get_game_state(game_id)
+            if game_state is None:
+                GameExistment
+
+            print("gameeeeeeeeeeeeeeeeeeeeeeeeeeee:", game_state)
+
+            response = jsonify(
+                {
+                    "game_state": game_state[1],
+                }
+            )
+            return response
+
+    def move(self):
+        @self.app.route("/move", methods=["POST"])
+        def move():
+            print("in move routeeeeeeeeeeee")
+            if request.method == "POST":
+                col = int(request.get_json()["column"])
+                # col = int(request.get_json()["column"]) - 1
+                print("coooooooooool", col)
+                print("typeeeeeee", type(col))
+                print(self.game.get_game_state())
+                res = self.game.play(player=self.game.current_turn, col=col)
+                game_state = self.game.get_game_state()
+                print(game_state)
+                self.game_db.update_game(self.game.get_id(), game_state)
+            return game_state
+
+    def run(self):
+        if __name__ == "__main__":
+            self.start_game()
+            self.choose_mode()
+            self.popup()
+            self.create_game()
+            self.board()
+            self.move()
+            self.app.run(debug=True)
+
+
+game = ConnectFour()
+game.run()   
