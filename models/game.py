@@ -1,23 +1,53 @@
+import json
 import uuid
+from abc import ABC, abstractmethod
+from random import choice
+
+from enums.game_status import GameStatus
+from enums.player_type import PlayerType
 from models.board import Board
 from models.dot import Dot
-from models.person import Person
-from random import choice
-import json
-from models.game_db import GameDB
 
 
-class Game:
-    game_db = GameDB("GAME")
+class GameInterface(ABC):
+    @abstractmethod
+    def set_players(self):
+        pass
 
-    def __init__(self, player_one: Person):
+    @abstractmethod
+    def get_current_turn(self):
+        pass
+
+    @abstractmethod
+    def get_id(self):
+        pass
+
+    @abstractmethod
+    def set_player_dot(self):
+        pass
+
+    @abstractmethod
+    def start(self):
+        pass
+
+    @abstractmethod
+    def winning_move(self, dot):
+        pass
+
+    @abstractmethod
+    def get_game_state(self):
+        pass
+
+
+class Game(GameInterface):
+    def __init__(self, player_one, player_two):
         self.__id = str(uuid.uuid4())
         self.player_one = player_one
-        self.player_two = ""
+        self.player_two = player_two
         self.current_turn = self.player_one
         self.remaining_moves = 42
         self.board = Board()
-        self.status = ""
+        self.status = GameStatus.CREATED
         self.default_dots = [Dot("RED", "#FF0000"), Dot("BLUE", "#0000FF")]
         self.players_dots = {}
         self.game_result = ""
@@ -35,11 +65,9 @@ class Game:
     def get_id(self):
         return self.__id
 
-    def connect_player_two(self, player_two):
-        self.player_two = player_two
-
     def set_player_dot(self):
         first_dot = choice(self.default_dots)
+        print("playeeeeeeeeer", self.player_one)
         self.players_dots[self.player_one.id] = first_dot
         self.default_dots.remove(first_dot)
         self.players_dots[self.player_two.id] = self.default_dots[0]
@@ -53,11 +81,9 @@ class Game:
         )
 
     def start(self):
-        if self.player_one is None or self.player_two is None:
-            raise ValueError
-        self.status = "playing"
-        print("Game has started!")
-        
+        self.status = GameStatus.STARTED
+        print(f"Game status is: {self.status.value}")
+
     def winning_move(self, dot):
         # Check horizontal locations for win
         for c in range(self.board.COLUMN_COUNT - 3):
@@ -102,9 +128,9 @@ class Game:
                     and self.board.board[r - 3][c + 3] == dot.name
                 ):
                     return True
-                
-    def updateDB(self):
-        move = {
+
+    def get_game_state(self):
+        game_json = {
             "current_turn": self.current_turn.id,
             "board": self.board.board,
             "game_result": self.game_result,
@@ -113,39 +139,34 @@ class Game:
             "remaining_moves": self.remaining_moves,
         }
 
-        final_move = json.dumps(move)
-        print(final_move)
-        self.game_db.add_move(self.__id, final_move)
+        game_json = json.dumps(game_json)
+        print(game_json)
+        return game_json
 
-    def retrieveSave(self):
-        save = self.game_db.getMove()
-        if save:
-            return save
-        else:
-            return "FAIL"
-
-    def move(self, player, col):
+    def play(self, player, col):
         if self.game_result != "":
             return "Game result already declared."
         else:
-            print("HELO")
-            print(player)
             print(self.players_dots[player.id])
-            if self.board.is_valid_location(col):
-                row = self.board.get_next_open_row(col)
-                self.board.drop_dot(row, col, self.players_dots[player.id].name)
-
+            # if self.board.is_valid_location(col):
+            row = self.board.get_next_open_row(col)
+            if row is not None:
+                if player.type == PlayerType.MiniMaxAI.value:
+                    player.make_move(self.board, self.players_dots[player.id].name)
+                else:
+                    player.make_move(
+                        self.board, row, col, self.players_dots[player.id].name
+                    )
             if self.winning_move(self.players_dots[player.id]):
                 self.game_result = f"{player.name} wins!!!!"
                 print(self.game_result)
-                return
+                return 0
             self.switchCurrentPlayer()
             self.remaining_moves -= 1
             if self.remaining_moves <= 0:
                 self.game_result = "DRAW"
             print(self.board.board)
 
-            self.updateDB()
             return None
 
     def switchCurrentPlayer(self):
@@ -153,4 +174,3 @@ class Game:
             self.current_turn = self.player_two
             return
         self.current_turn = self.player_one
-        
