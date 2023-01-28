@@ -1,0 +1,44 @@
+@import url('/static/css/style.css');
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: var(--color-black-1);
+}
+
+.head {
+  padding-top: 80px;
+}
+
+.player-status {
+  color: white;
+}
+
+.options {
+  width: 30%;
+  height: 3em;
+}
+
+.board {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+  width: 650px;
+  height: 570px;
+  top: 9rem;
+  background: var(--color-red);
+  border: 2px solid black;
+  padding: 0.5rem;
+  box-shadow: 5px 10px;
+}
+
+.slot {
+  width: 100px;
+  height: 90px;
+  border: 2px solid black;
+  border-radius: 50%;
+  background-color: white;
+  cursor: pointer;
+}
