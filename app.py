@@ -20,7 +20,7 @@ class AppInterface(ABC):
 
 class ConnectFour(AppInterface):
     def __init__(self):
-        self.app = Flask(_name_)
+        self.app = Flask(__name__)
         self.app.secret_key = "secret_key"
         self.game_db = GameDB("GAME")
         self.game_db.init_db()
@@ -111,7 +111,7 @@ class ConnectFour(AppInterface):
             return game_state
 
     def run(self):
-        if _name_ == "_main_":
+        if __name__ == "__main__":
             self.start()
             self.choose_mode()
             self.popup()

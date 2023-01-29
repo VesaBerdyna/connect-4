@@ -148,7 +148,6 @@ class Game(GameInterface):
             return "Game result already declared."
         else:
             print(self.players_dots[player.id])
-            # if self.board.is_valid_location(col):
             row = self.board.get_next_open_row(col)
             if row is not None:
                 if player.type == PlayerType.MiniMaxAI.value:
