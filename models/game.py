@@ -48,7 +48,7 @@ class Game(GameInterface):
         self.remaining_moves = 42
         self.board = Board()
         self.status = GameStatus.CREATED
-        self.default_dots = [Dot("RED", "#FF0000"), Dot("BLUE", "#0000FF")]
+        self.default_dots = [Dot("VIOLET", "#6c44a4"), Dot("BLUE", "#0000FF")]
         self.players_dots = {}
         self.game_result = ""
         self.players = {}
