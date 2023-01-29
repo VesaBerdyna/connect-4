@@ -13,7 +13,7 @@
         </div>
         <input type="hidden" id="game_id" name="game_id" value="{{game_id}}">
 
-        <div class = "board">
+        <div id="board" class = "board">
             <table>
                 <tr>
                     <td onclick = "move(event)" class = "slot" num="0"></td>
@@ -76,6 +76,11 @@
 
                 </tr>
             </table>
+        </div>
+
+        <div class="game-actions" id="game-actions">
+            <a id="single" href="modes">Play Again</a>
+            <a id="multi" href="/">Quit Game</a>
         </div>
         <script src="{{ url_for('static', filename = 'js/game.js') }}"></script>
     </body>

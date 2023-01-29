@@ -40,6 +40,9 @@ function getNewBoard() {
 
           document.getElementById('winner').innerHTML =
             'Winner is ' + game_result + ' .The game is over';
+            document.getElementById("board").style.display = "none";
+            document.getElementById("game-actions").style.display = "block";
+
         }
         displayBoard(result.board);
       }
