@@ -1,4 +1,21 @@
-from typing import List
+from abc import ABC, abstractmethod
+
+
+class Board(ABC):
+    ROW_COUNT: int
+    COLUMN_COUNT: int
+
+    @abstractmethod
+    def __init__(self) -> None:
+        pass
+
+    @abstractmethod
+    def get_next_open_row(self, col: int) -> int:
+        pass
+
+    @abstractmethod
+    def drop_dot(self, row: int, col: int, dot) -> None:
+        pass
 
 
 class Board:
