@@ -6,6 +6,8 @@ from exceptions.game_existment import GameExistment
 from models.game import Game
 from models.player_factory import PlayerFactory
 from abc import ABC, abstractmethod
+from helper.human_player_helper import HumanPlayerHelper
+
 
 
 class AppInterface(ABC):
@@ -109,6 +111,18 @@ class ConnectFour(AppInterface):
                 print(self.game_db.game_state.get_game_state())
 
             return game_state
+    
+        def help(self):
+        @self.app.route("/help", methods=["POST"])
+        def help():
+            print("help")
+            if request.method == "POST":
+                board = request.get_json()["board"]
+                player_one_name = request.args.get("player_one_name")
+                player_two_name = request.args.get("player_two_name")
+                suggested_move = HumanPlayerHelper.get_suggested_move(
+                    board, player_dot=player_one_name, opponent_dot=player_two_name
+                )
 
     def run(self):
         if __name__ == "__main__":
