@@ -9,7 +9,6 @@ from abc import ABC, abstractmethod
 from helper.human_player_helper import HumanPlayerHelper
 
 
-
 class AppInterface(ABC):
     @abstractmethod
     def start(self) -> None:
@@ -77,7 +76,12 @@ class ConnectFour(AppInterface):
             self.game_db.create_game(game_id, self.game.get_game_state())
             print(self.game_db.game_state.get_game_state())
 
-            return render_template("game.html", game_id=game_id)
+            return render_template(
+                "game.html",
+                game_id=game_id,
+                player_one_name=player_one.name,
+                player_two_name=player_two.name,
+            )
 
     def board(self):
         @self.app.route("/board", methods=["GET"])
@@ -111,8 +115,8 @@ class ConnectFour(AppInterface):
                 print(self.game_db.game_state.get_game_state())
 
             return game_state
-    
-        def help(self):
+
+    def help(self):
         @self.app.route("/help", methods=["POST"])
         def help():
             print("help")
