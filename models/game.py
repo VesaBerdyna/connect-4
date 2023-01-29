@@ -48,7 +48,7 @@ class Game(GameInterface):
         self.remaining_moves = 42
         self.board = Board()
         self.status = GameStatus.CREATED
-        self.default_dots = [Dot("RED", "#FF0000"), Dot("BLUE", "#0000FF")]
+        self.default_dots = [Dot("VIOLET", "#6c44a4"), Dot("BLUE", "#0000FF")]
         self.players_dots = {}
         self.game_result = ""
         self.players = {}
@@ -148,7 +148,6 @@ class Game(GameInterface):
             return "Game result already declared."
         else:
             print(self.players_dots[player.id])
-            # if self.board.is_valid_location(col):
             row = self.board.get_next_open_row(col)
             if row is not None:
                 if player.type == PlayerType.MiniMaxAI.value:

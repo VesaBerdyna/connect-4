@@ -7,14 +7,14 @@ function autoUpdate() {
 function displayBoard(board) {
   for (var row = 0; row < board.length; row++) {
     for (var col = 0; col < board[0].length; col++) {
-      if (board[row][col] == 'RED') {
+      if (board[row][col] == 'VIOLET') {
         document.querySelectorAll('[num="' + col + '"]')[
           row
-        ].style.backgroundColor = 'red';
+        ].style.backgroundColor = '#a4d6f5';
       } else if (board[row][col] == 'BLUE') {
         document.querySelectorAll('[num="' + col + '"]')[
           row
-        ].style.backgroundColor = 'yellow';
+        ].style.backgroundColor = '#dba4f5';
       }
     }
   }
@@ -41,7 +41,8 @@ function getNewBoard() {
           document.getElementById('winner').innerHTML =
             'Winner is ' + game_result + ' .The game is over';
             document.getElementById("board").style.display = "none";
-            document.getElementById("game-actions").style.display = "block";
+            document.getElementById("game-actions").style.display = "flex";
+            document.getElementById("win-animation").style.display = "block";
 
         }
         displayBoard(result.board);
