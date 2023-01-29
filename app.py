@@ -1,21 +1,32 @@
-from flask import (Flask, jsonify, redirect, render_template, request, session,
-                   url_for)
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 
 from db.game_db import GameDB
 from exceptions.empty_game import EmptyGame
 from exceptions.game_existment import GameExistment
 from models.game import Game
 from models.player_factory import PlayerFactory
+from abc import ABC, abstractmethod
 
 
-class ConnectFour:
+class AppInterface(ABC):
+    @abstractmethod
+    def start(self) -> None:
+        pass
+
+    @abstractmethod
+    def run(self) -> None:
+        pass
+
+
+class ConnectFour(AppInterface):
     def __init__(self):
-        self.app = Flask(__name__)
+        self.app = Flask(_name_)
         self.app.secret_key = "secret_key"
         self.game_db = GameDB("GAME")
         self.game_db.init_db()
+        print(self.game_db.game_state.get_game_state())
 
-    def start_game(self):
+    def start(self):
         @self.app.route("/")
         def start():
             return render_template("start_game.html")
@@ -49,8 +60,8 @@ class ConnectFour:
 
                 return redirect(url_for("create_game"))
             return render_template("popup.html")
-          
-   def create_game(self):
+
+    def create_game(self):
         @self.app.route("/game")
         def create_game():
             player_one = PlayerFactory.create_player_from_json(session["player_one"])
@@ -62,6 +73,8 @@ class ConnectFour:
             self.game.start()
             game_id = self.game.get_id()
             self.game_db.create_game(game_id, self.game.get_game_state())
+            print(self.game_db.game_state.get_game_state())
+
             return render_template("game.html", game_id=game_id)
 
     def board(self):
@@ -72,10 +85,10 @@ class ConnectFour:
                 EmptyGame
 
             game_state = self.game_db.get_game_state(game_id)
+            print(self.game_db.game_state.get_game_state())
+
             if game_state is None:
                 GameExistment
-
-            print("gameeeeeeeeeeeeeeeeeeeeeeeeeeee:", game_state)
 
             response = jsonify(
                 {
@@ -90,19 +103,16 @@ class ConnectFour:
             print("in move routeeeeeeeeeeee")
             if request.method == "POST":
                 col = int(request.get_json()["column"])
-                # col = int(request.get_json()["column"]) - 1
-                print("coooooooooool", col)
-                print("typeeeeeee", type(col))
-                print(self.game.get_game_state())
                 res = self.game.play(player=self.game.current_turn, col=col)
                 game_state = self.game.get_game_state()
-                print(game_state)
                 self.game_db.update_game(self.game.get_id(), game_state)
+                print(self.game_db.game_state.get_game_state())
+
             return game_state
 
     def run(self):
-        if __name__ == "__main__":
-            self.start_game()
+        if _name_ == "_main_":
+            self.start()
             self.choose_mode()
             self.popup()
             self.create_game()
@@ -112,4 +122,4 @@ class ConnectFour:
 
 
 game = ConnectFour()
-game.run()   
+game.run()
