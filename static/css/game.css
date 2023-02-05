@@ -4,13 +4,32 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-
   background: var(--color-black-1);
 }
 
 .head {
   padding-top: 80px;
 }
+
+.help-box{
+  display: none;
+  margin-top: 20px;
+  margin-right: 30px;
+  position:absolute;
+  top:0;
+  right:0;
+}
+
+.btn {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  background: var(--color-red);
+  border: 1px solid  var(--color-red);
+  color: white;
+}
+
+
 
 .player-status {
   color: white;
