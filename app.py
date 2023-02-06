@@ -106,7 +106,6 @@ class ConnectFour(AppInterface):
     def move(self):
         @self.app.route("/move", methods=["POST"])
         def move():
-            print("in move routeeeeeeeeeeee")
             if request.method == "POST":
                 col = int(request.get_json()["column"])
                 res = self.game.play(player=self.game.current_turn, col=col)
@@ -122,11 +121,14 @@ class ConnectFour(AppInterface):
             print("help")
             if request.method == "POST":
                 board = request.get_json()["board"]
+                print("board", type(board))
                 player_one_name = request.args.get("player_one_name")
                 player_two_name = request.args.get("player_two_name")
                 suggested_move = HumanPlayerHelper.get_suggested_move(
-                    board, player_dot=player_one_name, opponent_dot=player_two_name
+                    board=board, player_dot=player_one_name, opponent_dot=player_two_name
                 )
+                print("suggested move", suggested_move)
+            return "ok"
 
     def run(self):
         if __name__ == "__main__":
@@ -136,6 +138,7 @@ class ConnectFour(AppInterface):
             self.create_game()
             self.board()
             self.move()
+            self.help()
             self.app.run(debug=True)
 
 

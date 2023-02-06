@@ -67,7 +67,6 @@ class Game(GameInterface):
 
     def set_player_dot(self):
         first_dot = choice(self.default_dots)
-        print("playeeeeeeeeer", self.player_one)
         self.players_dots[self.player_one.id] = first_dot
         self.default_dots.remove(first_dot)
         self.players_dots[self.player_two.id] = self.default_dots[0]
@@ -130,6 +129,9 @@ class Game(GameInterface):
                     return True
 
     def get_game_state(self):
+        self.players["player_one"] = {f"{self.player_one.id}": self.players_dots[self.player_one.id].name}
+        self.players["player_two"] = {f"{self.player_two.id}": self.players_dots[self.player_two.id].name}
+
         game_json = {
             "current_turn": self.current_turn.id,
             "board": self.board.board,
@@ -137,6 +139,7 @@ class Game(GameInterface):
             "player_one_id": self.player_one.id,
             "player_two_id": self.player_two.id,
             "remaining_moves": self.remaining_moves,
+            "players": self.players
         }
 
         game_json = json.dumps(game_json)

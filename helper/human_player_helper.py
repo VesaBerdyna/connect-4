@@ -1,4 +1,5 @@
 class HumanPlayerHelper:
+    @classmethod
     def get_suggested_move(cls, board, player_dot, opponent_dot):
         rows, cols = len(board), len(board[0])
 

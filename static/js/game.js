@@ -95,7 +95,7 @@ function move(event) {
 }
 
 
-function help(){
+function help(event){
  const Http = new XMLHttpRequest();
 
 
@@ -106,10 +106,8 @@ function help(){
  data = JSON.stringify({ board: board });
 
 
+ console.log("data", data)
 
-
- console.log("Vewasdasdasdasd",result)
- console.log(typeof result);
  Http.send(data);
 }
 
