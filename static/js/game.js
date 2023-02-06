@@ -1,12 +1,5 @@
-
-
-
-
-
-
-
 reloaded = false;
-var board;
+var board,players;
 var current_turn, player_one_id, player_two_id, game_result;
 function autoUpdate() {
  myVar = setInterval(getNewBoard, 1000);
@@ -40,6 +33,7 @@ function getNewBoard() {
        data = JSON.parse(Http.response);
        result = JSON.parse(data.game_state);
        board = result['board']
+       players = result['players']
        current_turn = result['current_turn'];
        player_one_id = result['player_one_id'];
        player_two_id = result['player_two_id'];
@@ -103,7 +97,8 @@ function help(event){
  Http.open('POST', url);
  Http.setRequestHeader('Content-Type', 'application/json');
  Http.responseType = 'text';
- data = JSON.stringify({ board: board });
+ data = JSON.stringify({ board: board,
+players:players, current_turn: current_turn});
 
 
  console.log("data", data)
@@ -113,4 +108,3 @@ function help(event){
 
 
 autoUpdate();
-
