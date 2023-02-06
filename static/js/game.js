@@ -1,4 +1,5 @@
 reloaded = false;
+var board;
 var current_turn, player_one_id, player_two_id, game_result;
 function autoUpdate() {
   myVar = setInterval(getNewBoard, 1000);
@@ -30,6 +31,7 @@ function getNewBoard() {
       if (Http.status == 200) {
         data = JSON.parse(Http.response);
         result = JSON.parse(data.game_state);
+        board = result['board']
         current_turn = result['current_turn'];
         player_one_id = result['player_one_id'];
         player_two_id = result['player_two_id'];
@@ -40,9 +42,9 @@ function getNewBoard() {
 
           document.getElementById('winner').innerHTML =
             'Winner is ' + game_result + ' .The game is over';
-            document.getElementById("board").style.display = "none";
-            document.getElementById("game-actions").style.display = "flex";
-            document.getElementById("win-animation").style.display = "block";
+          document.getElementById("board").style.display = "none";
+          document.getElementById("game-actions").style.display = "flex";
+          document.getElementById("win-animation").style.display = "block";
 
         }
         displayBoard(result.board);
@@ -52,13 +54,12 @@ function getNewBoard() {
 }
 getNewBoard();
 
+
 function move(event) {
-  console.log('move', player_one_id, player_two_id, current_turn);
-  console.log(
-    'current cj',
-    current_turn == player_one_id,
-    current_turn == player_two_id
-  );
+  if (event) {
+    document.getElementById("help-box").style.display = "block";
+
+  }
   if (current_turn == player_one_id) {
     document.getElementById('status').innerHTML = 'Player two turn';
   } else if (current_turn == player_two_id) {
@@ -74,6 +75,21 @@ function move(event) {
   data = JSON.stringify({ column: colNum });
 
   Http.responseType = 'text';
+  Http.send(data);
+}
+
+function help() {
+  const Http = new XMLHttpRequest();
+
+  var url = 'http://127.0.0.1:5000/help';
+  Http.open('POST', url);
+  Http.setRequestHeader('Content-Type', 'application/json');
+  Http.responseType = 'text';
+  data = JSON.stringify({ board: board });
+
+
+  console.log("Vewasdasdasdasd", result)
+  console.log(typeof result);
   Http.send(data);
 }
 
