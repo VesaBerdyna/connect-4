@@ -129,8 +129,10 @@ class Game(GameInterface):
                     return True
 
     def get_game_state(self):
-        self.players["player_one"] = {f"{self.player_one.id}": self.players_dots[self.player_one.id].name}
-        self.players["player_two"] = {f"{self.player_two.id}": self.players_dots[self.player_two.id].name}
+        self.players["players"] = {
+            f"{self.player_one.id}": self.players_dots[self.player_one.id].name,
+            f"{self.player_two.id}": self.players_dots[self.player_two.id].name,
+        }
 
         game_json = {
             "current_turn": self.current_turn.id,
@@ -139,7 +141,7 @@ class Game(GameInterface):
             "player_one_id": self.player_one.id,
             "player_two_id": self.player_two.id,
             "remaining_moves": self.remaining_moves,
-            "players": self.players
+            "players": self.players,
         }
 
         game_json = json.dumps(game_json)

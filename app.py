@@ -118,16 +118,21 @@ class ConnectFour(AppInterface):
     def help(self):
         @self.app.route("/help", methods=["POST"])
         def help():
-            print("help")
             if request.method == "POST":
                 board = request.get_json()["board"]
-                print("board", type(board))
-                player_one_name = request.args.get("player_one_name")
-                player_two_name = request.args.get("player_two_name")
+                players = request.get_json()["players"]
+                current_turn = request.get_json()["current_turn"]
+                player_dot = players["players"][current_turn]
+
+                for item, key in players["players"].items():
+                    if item != current_turn:
+                        opponent_dot = key
+
                 suggested_move = HumanPlayerHelper.get_suggested_move(
-                    board=board, player_dot=player_one_name, opponent_dot=player_two_name
+                    board=board, player_dot=player_dot, opponent_dot=opponent_dot
                 )
-                print("suggested move", suggested_move)
+
+            # return suggested_move
             return "ok"
 
     def run(self):
