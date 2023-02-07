@@ -131,9 +131,12 @@ class ConnectFour(AppInterface):
                 suggested_move = HumanPlayerHelper.get_suggested_move(
                     board=board, player_dot=player_dot, opponent_dot=opponent_dot
                 )
+            row, col = suggested_move
+            if suggested_move is not None:
+                return jsonify((row, col)), 200
+            else:
+                return "No suggestion!", 200
 
-            # return suggested_move
-            return "ok"
 
     def run(self):
         if __name__ == "__main__":
