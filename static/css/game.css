@@ -13,6 +13,28 @@ body {
  padding-top: 80px;
 }
 
+.child {
+  position: relative;
+  font-family: sans-serif;
+  text-transform: uppercase;
+  font-size: 2em;
+  letter-spacing: 4px;
+  overflow: hidden;
+  background: linear-gradient(90deg, var(--color-purple), var(--color-red), #fff);
+  background-size: 90%;
+  animation: animate1 5s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0);
+}
+
+@keyframes animate1 {
+  0% {
+    background-position: -500%;
+  }
+  100% {
+    background-position: 500%;
+  }
+}
 
 .help-box{
  display: none;
@@ -23,6 +45,11 @@ body {
  right:0;
 }
 
+.text{
+font-size: 14px;
+color: white;
+padding-top: 20px;
+}
 
 .btn {
  height: 60px;
@@ -32,11 +59,6 @@ body {
  border: 1px solid  var(--color-red);
  color: white;
 }
-
-
-
-
-
 
 .player-status {
  color: white;
@@ -62,6 +84,17 @@ body {
  box-shadow: 5px 10px;
 }
 
+.quit-box{
+  position: absolute;
+  bottom: 25px;
+  right: 0;
+}
+
+.play-box{
+  position: absolute;
+  bottom: 25px;
+  left: 0;
+}
 
 .slot {
  width: 100px;
@@ -98,6 +131,7 @@ a:hover {
  -webkit-animation: animate var(--speed-fast) steps(8) forwards;
  animation: animate var(--speed-fast) steps(8) forwards;
 }
+
 a:last-of-type {
  border: 1px solid var(--color-purple);
 }
@@ -124,7 +158,6 @@ a:last-of-type:hover {
    background-position-y: -480px;
  }
 }
-
 
 .win-animation{
  display: none;
