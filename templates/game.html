@@ -14,9 +14,9 @@
       <button class="btn" onclick="help(event)" name="help" value="help">Help!</button>
 
     </div>
-    <div class="head" id="gametags">
-      <p class="player-status" id="status">Player one turn</p>
-      <p class="player-status" id="winner"></p>
+    <div class="head parent" id="gametags">
+      <p class="player-status child" id="status">Player one turn</p>
+      <p class="player-status child" id="winner"></p>
     </div>
     <input type="hidden" id="game_id" name="game_id" value="{{game_id}}" />
 
@@ -95,6 +95,16 @@
 
                 </tr>
             </table>
+            <div >
+             <p id="suggested-header" class="text">
+             
+             </p> 
+              <p class="text" id="suggested">
+
+              </p>
+            
+              
+            </div>
         </div>
 
         <div class="game-actions" id="game-actions">
@@ -104,6 +114,14 @@
           </div>
       
         </div>
+        <div id="play" class="play-box">
+          <a id="single" href="modes">Play Again</a>
+
+        </div>
+        <div id="quit" class="quit-box">
+          <a id="multi" href="/">Quit Game</a>
+        </div>
+
         <script src="{{ url_for('static', filename = 'js/game.js') }}"></script>
     </body>
 
