@@ -162,7 +162,7 @@ class Game(GameInterface):
                         self.board, row, col, self.players_dots[player.id].name
                     )
             if self.winning_move(self.players_dots[player.id]):
-                self.game_result = f"{player.name} wins!!!!"
+                self.game_result = f"{player.name}"
                 print(self.game_result)
                 return 0
             self.switchCurrentPlayer()
