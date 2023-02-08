@@ -1,7 +1,6 @@
 from models.ai_player import AIPlayer
 from enums.player_type import PlayerType
 import random
-from copy import deepcopy
 
 
 class RandomAI(AIPlayer):

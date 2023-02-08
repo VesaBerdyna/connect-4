@@ -70,7 +70,6 @@ class ConnectFour(AppInterface):
 
             self.game = Game(player_one=player_one, player_two=player_two)
             self.game.set_player_dot()
-            self.game.set_players()
             self.game.start()
             game_id = self.game.get_id()
             self.game_db.create_game(game_id, self.game.get_game_state())

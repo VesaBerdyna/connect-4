@@ -11,10 +11,6 @@ from models.dot import Dot
 
 class GameInterface(ABC):
     @abstractmethod
-    def set_players(self):
-        pass
-
-    @abstractmethod
     def get_current_turn(self):
         pass
 
@@ -52,12 +48,6 @@ class Game(GameInterface):
         self.players_dots = {}
         self.game_result = ""
         self.players = {}
-
-    def set_players(self):
-        return {
-            self.player_one.id: self.player_one,
-            self.player_two.id: self.player_two,
-        }
 
     def get_current_turn(self):
         return self.current_turn
@@ -146,7 +136,7 @@ class Game(GameInterface):
             "player_two_id": self.player_two.id,
             "remaining_moves": self.remaining_moves,
             "players": self.players,
-            "bot": bot
+            "bot": bot,
         }
 
         game_json = json.dumps(game_json)
@@ -157,12 +147,11 @@ class Game(GameInterface):
         if self.game_result != "":
             return "Game result already declared."
         else:
-            print(self.players_dots[player.id])
             row = self.board.get_next_open_row(col)
             if row is not None:
                 if player.type == PlayerType.RandomAI.value:
                     player.make_move(self.board, self.players_dots[player.id].name)
-                    
+
                 elif player.type == PlayerType.MiniMaxAI.value:
                     player_name = self.players_dots[player.id].name
 
@@ -184,7 +173,7 @@ class Game(GameInterface):
                     self.status = GameStatus.FINISHED
                     print(f"Game status is: {self.status.value}")
                     print(self.game_result)
-                    return 0   
+                    return 0
             self.switchCurrentPlayer()
             self.remaining_moves -= 1
             if self.remaining_moves <= 0:
