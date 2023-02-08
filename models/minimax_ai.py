@@ -1,11 +1,40 @@
 from models.ai_player import AIPlayer
 from enums.player_type import PlayerType
+import random
+from copy import deepcopy
+
+
+class RandomAI(AIPlayer):
+    def __init__(self, name, id=None):
+        super().__init__(name, id)
+        self.type = PlayerType.RandomAI.value
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name, "type": self.type}
+
+    @classmethod
+    def from_dict(cls, data):
+        id = data.get("id")
+        name = data.get("name")
+        return cls(name=name, id=id)
+        
+    def make_move(self, board, dot):
+        valid_moves = board.valid_moves()
+        random_col = random.choice(valid_moves)
+        row = board.get_next_open_row(random_col)
+        board.drop_dot(row, random_col, dot)
 
 
 class MinimaxAI(AIPlayer):
-    def __init__(self, name: str, depth, id=None):
-        super().__init__(name, depth, id)
-        self.type = PlayerType.HumanPlayer.value
+    def __init__(
+        self,
+        name: str,
+        id=None,
+        depth=1,
+    ):
+        super().__init__(name, id)
+        self.type = PlayerType.MiniMaxAI.value
+        self.depth = depth
 
     def to_dict(self):
         return {"id": self.id, "name": self.name, "type": self.type}
