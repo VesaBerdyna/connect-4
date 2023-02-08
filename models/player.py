@@ -12,3 +12,12 @@ class Player(ABC):
     def make_move(self, board):
         """Make a move on the game board"""
         pass
+
+    def to_dict(self):
+        return {"id": self.id, "name": self.name, "type": self.type}
+
+    @classmethod
+    def from_dict(cls, data):
+        id = data.get("id")
+        name = data.get("name")
+        return cls(name=name, id=id)

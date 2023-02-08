@@ -9,20 +9,12 @@ class RandomAI(AIPlayer):
         super().__init__(name, id)
         self.type = PlayerType.RandomAI.value
 
-    def to_dict(self):
-        return {"id": self.id, "name": self.name, "type": self.type}
-
-    @classmethod
-    def from_dict(cls, data):
-        id = data.get("id")
-        name = data.get("name")
-        return cls(name=name, id=id)
-
     def make_move(self, board, dot):
         valid_moves = board.valid_moves()
         random_col = random.choice(valid_moves)
         row = board.get_next_open_row(random_col)
         board.drop_dot(row, random_col, dot)
+
 
 class MinimaxAI(AIPlayer):
     def __init__(
@@ -34,15 +26,6 @@ class MinimaxAI(AIPlayer):
         super().__init__(name, id)
         self.type = PlayerType.MiniMaxAI.value
         self.depth = depth
-
-    def to_dict(self):
-        return {"id": self.id, "name": self.name, "type": self.type}
-
-    @classmethod
-    def from_dict(cls, data):
-        id = data.get("id")
-        name = data.get("name")
-        return cls(name=name, id=id)
 
     def make_move(self, board, dot, opponent_dot):
         col = self.minimax(board, self.depth, True, dot, opponent_dot)
