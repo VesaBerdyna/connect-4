@@ -174,10 +174,12 @@ class Game(GameInterface):
                     player.make_move(
                         self.board, row, col, self.players_dots[player.id].name
                     )
-                if self.board.winning_move(self.players_dots[player.id].name):
-                    self.game_result = f"{player.name} wins!!!!"
+                if self.winning_move(self.players_dots[player.id]):
+                    self.game_result = f"{player.name}"
+                    self.status = GameStatus.FINISHED
+                    print(f"Game status is: {self.status.value}")
                     print(self.game_result)
-                    return 0
+                    return 0   
             self.switchCurrentPlayer()
             self.remaining_moves -= 1
             if self.remaining_moves <= 0:
