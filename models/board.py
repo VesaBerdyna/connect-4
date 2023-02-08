@@ -35,3 +35,18 @@ class Board:
 
     def drop_dot(self, row: int, col: int, dot):
         self.board[row][col] = dot
+        
+    def is_valid_move(self, col):
+        if self.get_next_open_row(col) is not None:
+            return True
+
+    def valid_moves(self):
+        """
+        Get a list of all valid move columns on the board
+        """
+        valid_moves = []
+        for col in range(self.COLUMN_COUNT):
+            if self.is_valid_move(col):
+                valid_moves.append(col)
+        return valid_moves
+
