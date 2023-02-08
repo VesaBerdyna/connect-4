@@ -133,6 +133,10 @@ class Game(GameInterface):
             f"{self.player_one.id}": self.players_dots[self.player_one.id].name,
             f"{self.player_two.id}": self.players_dots[self.player_two.id].name,
         }
+        if self.player_two.name == "Bot":
+            bot = True
+        else:
+            bot = False
 
         game_json = {
             "current_turn": self.current_turn.id,
@@ -142,6 +146,7 @@ class Game(GameInterface):
             "player_two_id": self.player_two.id,
             "remaining_moves": self.remaining_moves,
             "players": self.players,
+            "bot": bot
         }
 
         game_json = json.dumps(game_json)
