@@ -155,16 +155,29 @@ class Game(GameInterface):
             print(self.players_dots[player.id])
             row = self.board.get_next_open_row(col)
             if row is not None:
-                if player.type == PlayerType.MiniMaxAI.value:
+                if player.type == PlayerType.RandomAI.value:
                     player.make_move(self.board, self.players_dots[player.id].name)
+                    
+                elif player.type == PlayerType.MiniMaxAI.value:
+                    player_name = self.players_dots[player.id].name
+
+                    for key, value in self.players_dots.items():
+                        if self.players_dots[key].name == player_name:
+                            continue
+                        opponent_id = key
+                    opponent_dot = self.players_dots[opponent_id].name
+                    player.make_move(
+                        self.board, self.players_dots[player.id].name, opponent_dot
+                    )
+
                 else:
                     player.make_move(
                         self.board, row, col, self.players_dots[player.id].name
                     )
-            if self.winning_move(self.players_dots[player.id]):
-                self.game_result = f"{player.name}"
-                print(self.game_result)
-                return 0
+                if self.board.winning_move(self.players_dots[player.id].name):
+                    self.game_result = f"{player.name} wins!!!!"
+                    print(self.game_result)
+                    return 0
             self.switchCurrentPlayer()
             self.remaining_moves -= 1
             if self.remaining_moves <= 0:
