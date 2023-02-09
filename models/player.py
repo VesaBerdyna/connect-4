@@ -8,11 +8,6 @@ class Player(ABC):
         self.id = str(uuid.uuid4()) if id is None else id
         self.name = name
 
-    @abstractmethod
-    def make_move(self, board):
-        """Make a move on the game board"""
-        pass
-
     def to_dict(self):
         return {"id": self.id, "name": self.name, "type": self.type}
 
