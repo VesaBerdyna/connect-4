@@ -38,6 +38,7 @@ function getNewBoard() {
         current_turn = result['current_turn'];
         player_one_id = result['player_one_id'];
         player_two_id = result['player_two_id'];
+
         game_result = result['game_result'];
         if (game_result == "DRAW") {
           document.getElementById('status').innerHTML = '';
@@ -79,11 +80,6 @@ function move(event) {
   var playerOne = document.getElementById("player_one_name").value;
   var playerTwo = document.getElementById("player_two_name").value;
 
-  if (current_turn == player_one_id) {
-    document.getElementById('status').innerHTML = 'It is '+ playerTwo + " turn";
-  } else if (current_turn == player_two_id) {
-    document.getElementById('status').innerHTML = 'It is '+ playerOne + " turn";
-  }
   const Http = new XMLHttpRequest();
 
 
@@ -97,6 +93,25 @@ function move(event) {
 
   Http.responseType = 'text';
   Http.send(data);
+
+  Http.onreadystatechange = function () {
+    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+      var response = JSON.parse(Http.responseText);
+
+
+      if (response["current_turn"] == response["player_one_id"]) {
+        document.getElementById('status').innerHTML = 'It is ' + playerOne + " turn";
+      } else if (response["current_turn"] == response["player_two_id"]) {
+        document.getElementById('status').innerHTML = 'It is ' +  playerTwo + " turn";
+      }
+
+      setTimeout(() => {
+        if (response["bot"] == true && response["current_turn"] == response["player_two_id"]) {
+          move(event)
+         }
+      },2000)
+    }
+  };
 }
 
 
@@ -125,13 +140,8 @@ function help(event) {
         document.getElementById('suggested').innerHTML = 'You can put the dot in these positions ' + (suggestedRow + 1) + " row and " + (suggestedCol + 1) + " column!";
 
       }
-
-
     }
-
-
   };
-
 }
 
 
