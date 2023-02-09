@@ -50,3 +50,47 @@ class Board:
                 valid_moves.append(col)
         return valid_moves
 
+    # def winning_move(self, board, dot):
+    #     # Check horizontal locations for win
+    #     for c in range(self.COLUMN_COUNT - 3):
+    #         for r in range(self.ROW_COUNT):
+    #             if (
+    #                 board[r][c] == dot
+    #                 and board[r][c + 1] == dot
+    #                 and board[r][c + 2] == dot
+    #                 and board[r][c + 3] == dot
+    #             ):
+    #                 return True
+
+    #     # Check vertical locations for win
+    #     for c in range(self.COLUMN_COUNT):
+    #         for r in range(self.ROW_COUNT - 3):
+    #             if (
+    #                 board[r][c] == dot
+    #                 and board[r + 1][c] == dot
+    #                 and board[r + 2][c] == dot
+    #                 and board[r + 3][c] == dot
+    #             ):
+    #                 return True
+
+    #     # Check positively sloped diaganols
+    #     for c in range(self.COLUMN_COUNT - 3):
+    #         for r in range(self.ROW_COUNT - 3):
+    #             if (
+    #                 board[r][c] == dot
+    #                 and board[r + 1][c + 1] == dot
+    #                 and board[r + 2][c + 2] == dot
+    #                 and board[r + 3][c + 3] == dot
+    #             ):
+    #                 return True
+
+    #     # Check negatively sloped diaganols
+    #     for c in range(self.COLUMN_COUNT - 3):
+    #         for r in range(3, self.ROW_COUNT):
+    #             if (
+    #                 board[r][c] == dot
+    #                 and board[r - 1][c + 1] == dot
+    #                 and board[r - 2][c + 2] == dot
+    #                 and board[r - 3][c + 3] == dot
+    #             ):
+    #                 return True

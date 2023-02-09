@@ -7,7 +7,6 @@ class AIPlayer(Player):
     def __init__(self, name, id):
         super().__init__(name, id)
 
-    @abstractmethod
     def make_move(self, board):
         """Choose the best move using the minimax algorithm"""
         pass
